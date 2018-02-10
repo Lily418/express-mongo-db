@@ -11,7 +11,7 @@ test('throws on invalid uri', function (t) {
 });
 
 test('middleware pass error on fail', function (t) {
-	var middleware = expressMongoDb('mongodb://localhost:31337');
+	var middleware = expressMongoDb('mongodb://localhost:31337', 'test');
 
 	middleware({}, {}, function (err) {
 		t.ok(err);
@@ -24,18 +24,18 @@ test('middleware pass error on fail', function (t) {
 });
 
 test('middleware stores connection to mongodb', function (t) {
-	var middleware = expressMongoDb('mongodb://localhost:27017');
+	var middleware = expressMongoDb('mongodb://localhost:27017', 'test');
 	var req = {};
 
 	middleware(req, {}, function (err) {
 		t.error(err);
 		t.ok(req.db);
-		req.db.close(true, t.end);
+		req.client.close(true, t.end);
 	});
 });
 
 test('middleware stores connection in custom property', function (t) {
-	var middleware = expressMongoDb('mongodb://localhost:27017', {
+	var middleware = expressMongoDb('mongodb://localhost:27017', 'test', {
 		property: 'myDb'
 	});
 	var req = {};
@@ -43,12 +43,12 @@ test('middleware stores connection in custom property', function (t) {
 	middleware(req, {}, function (err) {
 		t.error(err);
 		t.ok(req.myDb);
-		req.myDb.close(true, t.end);
+		req.client.close(true, t.end);
 	});
 });
 
 test('returns same connection for multiple requests', function (t) {
-	var middleware = expressMongoDb('mongodb://localhost:27017', {
+	var middleware = expressMongoDb('mongodb://localhost:27017', 'test', {
 		property: 'myDb'
 	});
 	var req = {};
@@ -63,7 +63,7 @@ test('returns same connection for multiple requests', function (t) {
 		middleware(req, {}, function (err) {
 			t.error(err);
 			t.equal(_db, req.myDb);
-			req.myDb.close(true, t.end);
+			req.client.close(true, t.end);
 		});
 	});
 });

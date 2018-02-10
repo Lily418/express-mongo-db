@@ -25,6 +25,7 @@ module.exports = function (uri, databaseName, opts) {
 		connection
 			.then(function (client) {
 				req[property] = client.db(databaseName);
+				req.client = client
 				next();
 			})
 			.catch(function (err) {
