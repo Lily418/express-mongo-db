@@ -24,7 +24,8 @@
     "express"
   ],
   "dependencies": {
-    "mongodb": "^2.0.39"
+    "body-parser": "^1.18.2",
+    "mongodb": "^3.0.2"
   },
   "devDependencies": {
     "eslint": "^1.0.0",

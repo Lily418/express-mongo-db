@@ -2,9 +2,13 @@
 
 var MongoClient = require('mongodb').MongoClient;
 
-module.exports = function (uri, opts) {
+module.exports = function (uri, databaseName, opts) {
 	if (typeof uri !== 'string') {
 		throw new TypeError('Expected uri to be a string');
+	}
+
+	if (typeof databaseName !== 'string') {
+		throw new TypeError('Expected databaseName to be a string');
 	}
 
 	opts = opts || {};
@@ -19,8 +23,8 @@ module.exports = function (uri, opts) {
 		}
 
 		connection
-			.then(function (db) {
-				req[property] = db;
+			.then(function (client) {
+				req[property] = client.db(databaseName);
 				next();
 			})
 			.catch(function (err) {
