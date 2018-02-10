@@ -16,7 +16,7 @@ $ npm install --save express-mongo-db
 var app = require('express')();
 
 var expressMongoDb = require('express-mongo-db');
-app.use(expressMongoDb('mongodb://localhost/test'));
+app.use(expressMongoDb('mongodb://localhost/', 'test'));
 
 app.get('/', function (req, res, next) {
 	req.db // => Db object
@@ -26,7 +26,7 @@ app.get('/', function (req, res, next) {
 
 ## API
 
-### expressMongoDb(uri, [options])
+### expressMongoDb(uri, databaseName, [options])
 
 #### uri
 
@@ -35,9 +35,16 @@ Type: `string`
 
 [Connection string uri](http://docs.mongodb.org/manual/reference/connection-string/).
 
+#### databaseName
+
+*Required*  
+Type: `string`
+
+Name of database to connect to.
+
 #### options
 
-All options from [MongoClient](http://mongodb.github.io/node-mongodb-native/2.0/api/MongoClient.html) are accepted as well.
+All options from [MongoClient](http://mongodb.github.io/node-mongodb-native/3.0/api/MongoClient.html) are accepted as well.
 
 ##### property
 
